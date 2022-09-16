@@ -96,7 +96,104 @@ char getInput()
 
 void updateGame(Object* state, char input, int width, int height)
 {
+    int dx = 0;
+    int dy = 0;
+    switch (input)
+    {
+    case 'w':
+        dy = -1;
+        break;
+    case 's':
+        dy = 1;
+        break;
+    case 'a':
+        dx = -1;
+        break;
+    case 'd':
+        dx = 1;
+        break;
+    default:
+        break;
+    }
 
+    int playerPos = 0;
+    for (playerPos = 0; playerPos < width * height; playerPos++) {
+        if (state[playerPos] == OBJ_MAN || state[playerPos] == OBJ_MAN_ON_GOAL) {
+            break;
+        }
+    }
+    
+    int px = playerPos % width;
+    int py = playerPos / width;
+
+    int tx = px + dx;
+    int ty = py + dy;
+
+    int tempPlayerPos = tx + ty * width;
+    if (state[tempPlayerPos] == OBJ_SPACE) {
+        if (state[playerPos] == OBJ_MAN_ON_GOAL) {
+            state[playerPos] = OBJ_GOAL;
+            state[tempPlayerPos] = OBJ_MAN;
+        }
+        else {
+            state[playerPos] = OBJ_SPACE;
+            state[tempPlayerPos] = OBJ_MAN;
+        }
+        
+    }
+
+    if (state[tempPlayerPos] == OBJ_GOAL) {
+        if (state[playerPos] == OBJ_MAN_ON_GOAL) {
+            state[playerPos] = OBJ_GOAL;
+            state[tempPlayerPos] = OBJ_MAN_ON_GOAL;
+        }
+        else {
+            state[playerPos] = OBJ_SPACE;
+            state[tempPlayerPos] = OBJ_MAN_ON_GOAL;
+
+        }
+    }
+
+    if (state[tempPlayerPos] == OBJ_BLOCK || state[tempPlayerPos] == OBJ_BLOCK_ON_GOAL) {
+        int btx = tx + dx;
+        int bty = ty + dy;
+        int tempBlockPos = bty * width + btx;
+        if (state[tempBlockPos] == OBJ_SPACE || state[tempBlockPos] == OBJ_GOAL) {
+            if (state[tempBlockPos] == OBJ_SPACE) {
+                if (state[tempPlayerPos] == OBJ_BLOCK) {
+                    state[tempPlayerPos] = OBJ_MAN;
+                }
+                else {
+                    state[tempPlayerPos] = OBJ_MAN_ON_GOAL;
+                }
+
+                state[tempBlockPos] = OBJ_BLOCK;
+            }
+            else {
+                if (state[tempPlayerPos] == OBJ_BLOCK) {
+                    state[tempPlayerPos] = OBJ_MAN;
+                }
+                else {
+                    state[tempPlayerPos] = OBJ_MAN_ON_GOAL;
+                }
+                state[tempBlockPos] = OBJ_BLOCK_ON_GOAL;
+
+            }
+
+
+            if (state[playerPos] == OBJ_MAN_ON_GOAL) {
+                state[playerPos] = OBJ_GOAL;
+            }
+            else
+            {
+                state[playerPos] = OBJ_SPACE;
+            }
+
+
+        }
+    }
+
+        
 }
 
 void draw(Object* state,int width,int height)
@@ -111,6 +208,18 @@ void draw(Object* state,int width,int height)
 
 }
 
+bool checkWin(Object* state, int width, int height) {
+    bool win = true;
+
+    for (int i = 0; i < width * height; i++) {
+        if (state[i] == OBJ_BLOCK) {
+            win = false;
+            break;
+        }
+    }
+
+    return win;
+}
 
 int main()
 {
@@ -121,6 +230,11 @@ int main()
     while (true) {
 
         draw(state, gStateWidth, gStateHeight);
+
+        if (checkWin(state, gStateWidth, gStateHeight)) {
+            std::cout << "you win!";
+            break;
+        }
 
         char input;
         input = getInput();
