@@ -1,8 +1,9 @@
-﻿// demo02.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
+﻿// demo03.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
 
-#include <iostream>
+//#include <iostream>
 #include "GameLib/Framework.h"
+#include "File.h"
 using namespace GameLib;
 
 enum Object {
@@ -34,8 +35,21 @@ void initialize(Object* state,
     int height,
     const char* stageData)
 {
+    const char* d;
+    File stageFile("stage.txt");
+    char *stage = stageFile.data();
 
-    const char* d = stageData;
+    if (stageFile.size() > 0) {
+        cout << "file open"<<endl;
+        d = stage;
+    }
+    else {
+        cout << "file not open" << endl;
+        d = stageData;
+    }
+    
+
+
     int x = 0;
     int y = 0;
 
@@ -201,11 +215,11 @@ void updateGame(Object* state, char input, int width, int height)
 
 void draw(Object* state, int width, int height)
 {
-    const char font[] = { ' ', '#', '.', 'o', 'O', 'p', 'P' };
+    const char font[] = { ' ', '#', '.', 'o', 'O', 'p', 'P','*'};
     unsigned* vram = Framework::instance().videoMemory();
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
-            
+
             unsigned color = 0x000000;
             switch (font[state[y * width + x]])
             {
@@ -234,14 +248,14 @@ void draw(Object* state, int width, int height)
                 break;
             }
 
-            for (int dy = 0; dy < 16; dy++ ) 
+            for (int dy = 0; dy < 16; dy++)
             {
-                for (int dx = 0; dx < 16; dx++) 
+                for (int dx = 0; dx < 16; dx++)
                 {
-                    vram[(16* y + dy) * Framework::instance().width()  + (16*x + dx)] = color;
+                    vram[(16 * y + dy) * Framework::instance().width() + (16 * x + dx)] = color;
                 }
             }
-            
+
             cout << font[state[y * width + x]];
         }
         cout << endl;
@@ -273,25 +287,25 @@ void mainLoop()
         state = new Object[gStateWidth * gStateHeight];
         initialize(state, gStateWidth, gStateHeight, gStageData);
     }
-    
+
 
 
 
     //while (true) {
 
-        
 
-        if (checkWin(state, gStateWidth, gStateHeight)) {
-            std::cout << "you win!";
-            return;
-            //break;
-        }
 
-        char input;
-        input = getInput();
+    if (checkWin(state, gStateWidth, gStateHeight)) {
+        cout << "you win!"<<endl;
+        return;
+        //break;
+    }
 
-        updateGame(state, input, gStateWidth, gStateHeight);
-        draw(state, gStateWidth, gStateHeight);
+    char input;
+    input = getInput();
+
+    updateGame(state, input, gStateWidth, gStateHeight);
+    draw(state, gStateWidth, gStateHeight);
 
     //}
 }
