@@ -26,7 +26,7 @@ public:
 	unsigned width();
 	unsigned* data();
 
-
+	void drawCell(int dstX, int dstY, int imgX, int imgY, int width, int height);
 	~Image();
 private:
 };

@@ -30,6 +30,13 @@ const char gStageData[] = "\
 const int gStateWidth = 8;
 const int gStateHeight = 5;
 Object* state = nullptr;
+Image img;
+
+bool gPrevInputsW = false;
+bool gPrevInputsA = false;
+bool gPrevInputsS = false;
+bool gPrevInputsD = false;
+
 
 void initialize(Object* state,
     int width,
@@ -106,8 +113,8 @@ void initialize(Object* state,
 
 char getInput()
 {
-    char input;
-    GameLib::cin >> input;
+    char input = 's';
+    //GameLib::cin >> input;
     return input;
 }
 
@@ -115,24 +122,43 @@ void updateGame(Object* state, char input, int width, int height)
 {
     int dx = 0;
     int dy = 0;
+    bool InputW = false;
+    bool InputA = false;
+    bool InputS = false;
+    bool InputD = false;
 
-    switch (input)
-    {
-    case 'w':
-        dy = -1;
-        break;
-    case 's':
-        dy = 1;
-        break;
-    case 'a':
-        dx = -1;
-        break;
-    case 'd':
-        dx = 1;
-        break;
-    default:
-        break;
+    Framework f = Framework::instance();
+    if (f.isKeyOn('W')) {
+        cout << "WWW" << endl;
+        InputW = true;
     }
+    if (f.isKeyOn('A')) {
+        cout << "AAA" << endl;
+        InputA = true;
+    }
+    if (f.isKeyOn('S')) {
+        cout << "SSS" << endl;
+        InputS = true;
+    }
+    if (f.isKeyOn('D')) {
+        cout << "DDD" << endl;
+        InputD = true;
+    }
+
+    if (InputW && (!gPrevInputsW)) {
+        dy = -1;
+    }else if (InputA && (!gPrevInputsA)){
+        dx = -1;
+    }else if (InputS && (!gPrevInputsS)) {
+        dy = 1;
+    }else if (InputD && (!gPrevInputsD)) {
+        dx = 1;
+    }
+
+    gPrevInputsW = InputW;
+    gPrevInputsA = InputA;
+    gPrevInputsS = InputS;
+    gPrevInputsD = InputD;
 
     int playerPos = 0;
     for (playerPos = 0; playerPos < width * height; playerPos++) {
@@ -226,35 +252,35 @@ void draw(Object* state, int width, int height)
             {
             case ' ':
                 color = 0xffffff;
+                img.drawCell(32*x,32*y,0,0,32,32);
+
                 break;
             case '#':
                 color = 0x855E42;
+                img.drawCell(32 * x, 32 * y, 32, 0, 32, 32);
                 break;
             case '.':
+                img.drawCell(32 * x, 32 * y, 64, 0, 32, 32);
                 color = 0x00FFFF;
                 break;
             case 'o':
+                img.drawCell(32 * x, 32 * y, 96, 0, 32, 32);
                 color = 0x0000FF;
                 break;
             case 'O':
+                img.drawCell(32 * x, 32 * y, 96, 0, 32, 32);
                 color = 0x00ff00;
                 break;
             case 'p':
+                img.drawCell(32 * x, 32 * y, 128, 0, 32, 32);
                 color = 0xff0000;
                 break;
             case 'P':
+                img.drawCell(32 * x, 32 * y, 128, 0, 32, 32);
                 color = 0xff0000;
                 break;
             default:
                 break;
-            }
-
-            for (int dy = 0; dy < 16; dy++)
-            {
-                for (int dx = 0; dx < 16; dx++)
-                {
-                    vram[(16 * y + dy) * Framework::instance().width() + (16 * x + dx)] = color;
-                }
             }
 
             cout << font[state[y * width + x]];
@@ -287,39 +313,23 @@ void mainLoop()
     if (!state) {
         state = new Object[gStateWidth * gStateHeight];
         initialize(state, gStateWidth, gStateHeight, gStageData);
-
-        Image img("demo.dds");
-        unsigned* vram = Framework::instance().videoMemory();
-        int fHeight = Framework::instance().height();
-        int fWidth = Framework::instance().width();
-        for (int y = 0; y < img.height() && y< fHeight; y++) {
-            for (int x = 0; x < img.width()&& x< fWidth; x++) {
-                vram[y* Framework::instance().width() + x] = img.data()[y * img.width() + x];
-            }
-        }
-
+        img.load("box.dds");
     }
-
-
-
-
-    //while (true) {
-
 
 
     if (checkWin(state, gStateWidth, gStateHeight)) {
         cout << "you win!"<<endl;
         return;
-        //break;
     }
 
-    //char input;
+    char input;
+    input = 'w';
     //input = getInput();
 
-    //updateGame(state, input, gStateWidth, gStateHeight);
-    //draw(state, gStateWidth, gStateHeight);
+    updateGame(state, input, gStateWidth, gStateHeight);
+    draw(state, gStateWidth, gStateHeight);
 
-    //}
+
 }
 
 namespace GameLib {

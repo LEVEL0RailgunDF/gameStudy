@@ -17,7 +17,7 @@ void Image::load(const char* filename)
 
 	const unsigned char *theight = reinterpret_cast<const unsigned char*>(& tempData[12]);
 	const unsigned char*twidth = reinterpret_cast<const unsigned char*>(& tempData[16]);
-	//const unsigned char* timageData = reinterpret_cast<const unsigned char*>(&tempData[128]);
+	const unsigned char* timageData = reinterpret_cast<const unsigned char*>(&tempData[128]);
 
 	cout << theight[0] << theight[1] << theight[2] << theight[3] <<endl;
 	cout << twidth[0] << twidth[1] << twidth[2] << twidth[3] << endl;
@@ -63,6 +63,20 @@ unsigned Image::width()
 unsigned* Image::data()
 {
 	return mImageData;
+}
+
+void Image::drawCell(int dstX, int dstY, int imgX, int imgY, int w, int h)
+{
+	unsigned* vram = Framework::instance().videoMemory();
+	unsigned windowWidth = Framework::instance().width();
+
+	for (int y = 0; y < h; y++) {
+		for (int x = 0; x < w; x++) {
+			int temp = (imgY + y) * mWidth + imgX + x;
+			vram[(dstY + y) * windowWidth + dstX + x] = mImageData[temp];
+		}
+	}
+
 }
 
 Image::~Image()
