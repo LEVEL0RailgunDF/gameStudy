@@ -1,5 +1,9 @@
 #pragma once
+
+#include "GameLib/Framework.h"
 #include "File.h"
+using namespace GameLib;
+
 
 class Image
 {
@@ -7,7 +11,9 @@ public:
 
 private:
 	const char* mFilename = nullptr;
-	int mSize = 0;
+	unsigned mHeight;
+	unsigned mWidth;
+	unsigned* mImageData;
 	char* mData = nullptr;
 	File imageFile;
 public:
@@ -15,8 +21,10 @@ public:
 	Image(const char* filename);
 	void load(const char* filename);
 
-	//int size();
-	//char* data();
+	int size();
+	unsigned height();
+	unsigned width();
+	unsigned* data();
 
 
 	~Image();

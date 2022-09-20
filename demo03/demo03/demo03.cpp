@@ -4,6 +4,7 @@
 //#include <iostream>
 #include "GameLib/Framework.h"
 #include "File.h"
+#include "Image.h"
 using namespace GameLib;
 
 enum Object {
@@ -286,6 +287,17 @@ void mainLoop()
     if (!state) {
         state = new Object[gStateWidth * gStateHeight];
         initialize(state, gStateWidth, gStateHeight, gStageData);
+
+        Image img("demo.dds");
+        unsigned* vram = Framework::instance().videoMemory();
+        int fHeight = Framework::instance().height();
+        int fWidth = Framework::instance().width();
+        for (int y = 0; y < img.height() && y< fHeight; y++) {
+            for (int x = 0; x < img.width()&& x< fWidth; x++) {
+                vram[y* Framework::instance().width() + x] = img.data()[y * img.width() + x];
+            }
+        }
+
     }
 
 
@@ -301,11 +313,11 @@ void mainLoop()
         //break;
     }
 
-    char input;
-    input = getInput();
+    //char input;
+    //input = getInput();
 
-    updateGame(state, input, gStateWidth, gStateHeight);
-    draw(state, gStateWidth, gStateHeight);
+    //updateGame(state, input, gStateWidth, gStateHeight);
+    //draw(state, gStateWidth, gStateHeight);
 
     //}
 }
