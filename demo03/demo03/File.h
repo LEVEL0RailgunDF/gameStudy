@@ -14,7 +14,8 @@ public:
 	File();
 	File(const char* filename);
 	void load(const char* filename);
-	
+	unsigned getUnsigned(int position);
+
 	int size();
 	char* data();
 

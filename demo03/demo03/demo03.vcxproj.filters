@@ -24,12 +24,24 @@
     <ClCompile Include="Image.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Array2D.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="File.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Image.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Array2D.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

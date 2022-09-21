@@ -29,7 +29,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -77,13 +77,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(GAME_LIB_DIR)\GameLib\2DGraphics1\include;C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(GAME_LIB_DIR)\GameLib\RealTime\include;C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(GAME_LIB_DIR)\GameLib\2DGraphics1\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(GAME_LIB_DIR)\GameLib\RealTime\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>GameLib_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -132,13 +132,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Array2D.cpp" />
     <ClCompile Include="demo03.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Image.cpp" />
+    <ClCompile Include="Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Array2D.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="Image.h" />
+    <ClInclude Include="Stage.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

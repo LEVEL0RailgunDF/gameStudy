@@ -25,6 +25,19 @@ void File::load(const char* filename)
 
 }
 
+unsigned File::getUnsigned(int position)
+{
+	const unsigned char *up;
+	unsigned result;
+	up = reinterpret_cast<const unsigned char*>(&mData[position]);
+
+	result = up[0];
+	result |= (up[1] << 8);
+	result |= (up[2] << 16);
+	result |= (up[3] << 24);
+	return result;
+}
+
 int File::size()
 {
 	return this->mSize;
