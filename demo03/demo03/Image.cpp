@@ -71,28 +71,29 @@ void Image::loadPNG(const char* filename)
 		if (chunkType[0] == 'I' && chunkType[1] == 'D' && chunkType[2] == 'A' && chunkType[3] == 'T') {
 	
 			Byte *compr, *uncompr;
-			compr = new Byte[length];
-			uncompr = new Byte[length*10];
-			uLongf test = length * 10;
+			compr = new Byte[length*2];
+			uncompr = new Byte[length*20];
+			uLongf test = length * 20;
 
+			compr = reinterpret_cast<Byte*>(&tempData[pos + 8]);
 
 			cout << "test:" << *reinterpret_cast<unsigned *>(&test) << endl;
 
-			for (int i = 0; i < length; i++) {
-				compr[i] = tempData[pos + 8 + i];
-			}
+			//for (int i = 0; i < length*2; i++) {
+			//	compr[i] = ;
+			//}
 
 
-			cout << "uncompress:"<<uncompress(uncompr, &test, compr, length)<<endl;
+			cout << "uncompress:"<<uncompress(uncompr, &test, compr, length*2)<<endl;
 			cout << "test:" << *reinterpret_cast<unsigned *>(&test) << endl;
-			//break;
-			signed dataLen = test / 4;
+\
+			signed dataLen = test / 8;
 			mImageData = new unsigned[dataLen];
 			for (int i = 0; i < dataLen; i++) {
 
 				const unsigned char* up;
 				unsigned result;
-				up = reinterpret_cast<const unsigned char*>(&uncompr[i*4]);
+				up = reinterpret_cast<const unsigned char*>(&uncompr[i*8]);
 
 				result = up[0];
 				result |= (up[1] << 8);
@@ -101,7 +102,6 @@ void Image::loadPNG(const char* filename)
 
 				mImageData[i] = result;
 			}
-			mImageData = reinterpret_cast<unsigned*>(&test);
 		}
 		
 		pos = pos + 12 + length;
