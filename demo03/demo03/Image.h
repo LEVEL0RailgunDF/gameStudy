@@ -1,7 +1,11 @@
 #pragma once
-
+#pragma   comment   (linker,"/NODEFAULTLIB:libc.lib")
 #include "GameLib/Framework.h"
 #include "File.h"
+
+#define ZLIB_WINAPI
+#include <zlib.h>
+
 using namespace GameLib;
 
 
@@ -20,6 +24,8 @@ public:
 	Image();
 	Image(const char* filename);
 	void load(const char* filename);
+
+	void loadPNG(const char* filename);
 
 	int size();
 	unsigned height();
