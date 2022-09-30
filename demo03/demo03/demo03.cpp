@@ -11,29 +11,24 @@
 using namespace GameLib;
 
 Stage *stage = nullptr;
-Image *img = nullptr;
 
 void mainLoop()
 {
 
-    //if (!stage) {
-    //    File stageFile("stage.txt");
-    //    char* stageData = stageFile.data();
-    //    stage = new Stage(stageData, stageFile.size(),"box.dds");
-    //}
-
-    //if (stage->checkClear()) {
-    //    cout << "you win!"<<endl;
-    //    return;
-    //}
-
-    //stage->update();
-    //stage->draw();
-    if(!img) {
-        img = new Image();
-        img->loadPNG("box.png");
-        img->drawCell(0, 0, 0, 0, 30, 30);
+    if (!stage) {
+        File stageFile("stage.txt");
+        char* stageData = stageFile.data();
+        stage = new Stage(stageData, stageFile.size(),"box.dds");
     }
+
+    if (stage->checkClear()) {
+        cout << "you win!"<<endl;
+        return;
+    }
+
+    stage->update();
+    stage->draw();
+
 
 
 

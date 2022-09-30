@@ -31,10 +31,10 @@ unsigned File::getUnsigned(int position)
 	unsigned result;
 	up = reinterpret_cast<const unsigned char*>(&mData[position]);
 
-	result = up[3];
-	result |= (up[2] << 8);
-	result |= (up[0] << 24);
-	result |= (up[1] << 16);
+	result = up[0];
+	result |= (up[1] << 8);
+	result |= (up[2] << 16);
+	result |= (up[3] << 24);
 	return result;
 }
 
