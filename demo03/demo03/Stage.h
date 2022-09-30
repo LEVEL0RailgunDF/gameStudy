@@ -28,6 +28,9 @@ private:
     bool gPrevInputsA = false;
     bool gPrevInputsS = false;
     bool gPrevInputsD = false;
+
+    int gPreviousTime[10];
+
 public:
     Stage();
     Stage(char* stageData, int size, const char* imaFile);

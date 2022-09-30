@@ -7,6 +7,10 @@ Stage::Stage() {
 Stage::Stage(char* stageData, int size, const char* imaFile)
 {
 	initialize(stageData, size, imaFile);
+
+    for (int i = 0; i < 10 ; i++) {
+        gPreviousTime[i] = 0;
+    }
 }
 
 Stage::~Stage()
@@ -154,6 +158,21 @@ bool Stage::checkClear()
 
 void Stage::update()
 {
+    Framework f = Framework::instance();
+
+    int currentTime = f.time();
+    int frameTime10 = currentTime - gPreviousTime[0];
+
+    for (int i = 0; i < 10 - 1 ; i++) {
+        gPreviousTime[i] = gPreviousTime[i + 1];
+    }
+    gPreviousTime[9] = currentTime;
+
+
+
+    int frameRate = 1000 *10/ frameTime10;
+    cout << frameRate<<endl;
+
     int dx = 0;
     int dy = 0;
     bool InputW = false;
@@ -161,7 +180,7 @@ void Stage::update()
     bool InputS = false;
     bool InputD = false;
 
-    Framework f = Framework::instance();
+   
     if (f.isKeyOn('W')) {
         cout << "WWW" << endl;
         InputW = true;
