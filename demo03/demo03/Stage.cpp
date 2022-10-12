@@ -161,13 +161,13 @@ void Stage::update()
     Framework f = Framework::instance();
 
     int currentTime = f.time();
+
     int frameTime10 = currentTime - gPreviousTime[0];
 
     for (int i = 0; i < 10 - 1 ; i++) {
         gPreviousTime[i] = gPreviousTime[i + 1];
     }
     gPreviousTime[9] = currentTime;
-
 
 
     int frameRate = 1000 *10/ frameTime10;

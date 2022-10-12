@@ -14,11 +14,14 @@ Stage *stage = nullptr;
 
 void mainLoop()
 {
+    
 
     if (!stage) {
         File stageFile("stage.txt");
         char* stageData = stageFile.data();
         stage = new Stage(stageData, stageFile.size(),"box.dds");
+
+        Framework::instance().setFrameRate(60);
     }
 
     if (stage->checkClear()) {
