@@ -65,44 +65,18 @@ void Stage::initialize(char* stageData, int size, const  char* imaFile) {
     while (*d != '\0') {
         bool isGoal = false;
         Object t;
+        t.set(*d);
 
         switch (*d)
         {
-        case '#':
-            t = OBJ_WALL;
-            break;
-        case ' ':
-            t = OBJ_SPACE;
-            break;
-        case 'o':
-            t = OBJ_BLOCK;
-            break;
-        case 'O':
-            t = OBJ_BLOCK;
-            isGoal = true;
-            break;
-        case 'p':
-            t = OBJ_MAN;
-            break;
-        case 'P':
-            t = OBJ_MAN;
-            isGoal = true;
-            break;
-        case '.':
-            t = OBJ_GOAL;
-            isGoal = true;
-            break;
         case '\n':
-            t = OBJ_UNKNOWN;
             x = 0;
             y++;
             break;
-        default:
-            t = OBJ_UNKNOWN;
-            break;
         }
 
-        if (t != OBJ_UNKNOWN) {
+
+        if (t.mType != Object::OBJ_UNKNOWN) {
             mObjects(x,y) = t;
             mGoalFlags(x,y) = isGoal;
             x++;
@@ -118,37 +92,22 @@ void Stage::initialize(char* stageData, int size, const  char* imaFile) {
 void Stage::draw() {
     for (int y = 0; y < stageHeight; y++) {
         for (int x = 0; x <stageWidth; x++) {
-            img.drawCell(32 * x, 32 * y, 0, 0, 32, 32);
-            unsigned color = 0x000000;
-            switch (mObjects(x,y))
-            {
-            case OBJ_SPACE:
-                img.drawCell(32 * x, 32 * y, 0, 0, 32, 32);
-                break;
-            case OBJ_WALL:
-                img.drawCell(32 * x, 32 * y, 32, 0, 32, 32);
-                break;
-            case OBJ_GOAL:
-                img.drawCell(32 * x, 32 * y, 64, 0, 32, 32);
-                break;
-            case OBJ_BLOCK:
-                img.drawCell(32 * x, 32 * y, 96, 0, 32, 32);
-                break;
-            case OBJ_MAN:
-                img.drawCell(32 * x, 32 * y, 128, 0, 32, 32);
-                break;
-            default:
-                break;
-            }
+            mObjects(x, y).drawBackgrand(x,y,&img);
         }
     }
+    for (int y = 0; y < stageHeight; y++) {
+        for (int x = 0; x < stageWidth; x++) {
+            mObjects(x, y).drawForegrand(x, y, &img, mMoveCount);
+        }
+    }
+   
 }
 
 bool Stage::checkClear()
 {
     for (int y = 0; y < stageHeight; y++) {
         for (int x = 0; x < stageWidth; x++) {
-            if (mObjects(x, y) == OBJ_BLOCK && mGoalFlags(x,y) == false) {
+            if (mObjects(x, y).mType == Object::OBJ_BLOCK && mObjects(x, y).mGoalFlag == false) {
                 return false;
             }
         }
@@ -159,7 +118,7 @@ bool Stage::checkClear()
 void Stage::update()
 {
     Framework f = Framework::instance();
-
+    
     int currentTime = f.time();
 
     int frameTime10 = currentTime - gPreviousTime[0];
@@ -173,6 +132,23 @@ void Stage::update()
     int frameRate = 1000 *10/ frameTime10;
     cout << frameRate<<endl;
 
+
+    if (mMoveCount >= MAX_MOVE_COUNT) {
+        mMoveCount = 0;
+        for (int y = 0; y < stageHeight; y++) {
+            for (int x = 0; x < stageWidth; x++) {
+                mObjects(x, y).mMoveX = 0;
+                mObjects(x, y).mMoveY = 0;
+            }
+        }
+    }
+
+    if (mMoveCount > 0) {
+        mMoveCount ++;
+        return;
+    }
+
+
     int dx = 0;
     int dy = 0;
     bool InputW = false;
@@ -182,19 +158,15 @@ void Stage::update()
 
    
     if (f.isKeyOn('W')) {
-        cout << "WWW" << endl;
         InputW = true;
     }
     if (f.isKeyOn('A')) {
-        cout << "AAA" << endl;
         InputA = true;
     }
     if (f.isKeyOn('S')) {
-        cout << "SSS" << endl;
         InputS = true;
     }
     if (f.isKeyOn('D')) {
-        cout << "DDD" << endl;
         InputD = true;
     }
 
@@ -223,7 +195,7 @@ void Stage::update()
     bool isPlayer = false;
     for (py = 0; py < stageHeight; py++) {
         for (px = 0; px < stageWidth; px++) {
-            if (mObjects(px, py) == OBJ_MAN) {
+            if (mObjects(px, py).mType == Object::OBJ_MAN) {
                 isPlayer = true;
                 break;
             }
@@ -238,43 +210,45 @@ void Stage::update()
     int tx = px + dx;
     int ty = py + dy;
 
-    if (mObjects(tx, ty) == OBJ_SPACE) {
-        if (mGoalFlags(px, py) == true) {
-            mObjects(px, py) = OBJ_GOAL;
+    if (mObjects(tx, ty).mType == Object::OBJ_SPACE) {
+        mObjects(tx, ty).move(dx, dy, Object::OBJ_MAN);
+        if (mObjects(px, py).mGoalFlag) {
+            mObjects(px, py).move(dx, dy, Object::OBJ_GOAL);
         }
         else {
-            mObjects(px, py) = OBJ_SPACE;
+            mObjects(px, py).move(dx, dy, Object::OBJ_SPACE);
         }
-        mObjects(tx, ty) = OBJ_MAN;
-
+        mMoveCount = 1;
     }
-
-    if (mObjects(tx, ty) == OBJ_GOAL) {
-        if (mGoalFlags(px, py) == true) {
-            mObjects(px, py) = OBJ_GOAL;
+    
+    if (mObjects(tx, ty).mType == Object::OBJ_GOAL) {
+        mObjects(tx, ty).move(dx, dy, Object::OBJ_MAN);
+        if (mObjects(px, py).mGoalFlag) {
+            mObjects(px, py).move(dx, dy, Object::OBJ_GOAL);
         }
         else {
-            mObjects(px, py) = OBJ_SPACE;
+            mObjects(px, py).move(dx, dy, Object::OBJ_SPACE);
         }
-        mObjects(tx, ty) = OBJ_MAN;
+        mMoveCount = 1;
     }
+    
+    if (mObjects(tx, ty).mType == Object::OBJ_BLOCK) {
+            int btx = tx + dx;
+            int bty = ty + dy;
 
-    if (mObjects(tx, ty) == OBJ_BLOCK) {
-        int btx = tx + dx;
-        int bty = ty + dy;
+            if (mObjects(btx, bty).mType == Object::OBJ_SPACE || mObjects(btx, bty).mType == Object::OBJ_GOAL) {
+                mObjects(btx, bty).move(dx, dy, Object::OBJ_BLOCK);
+                mObjects(tx, ty).move(dx, dy, Object::OBJ_MAN);
 
-        if (mObjects(btx, bty) == OBJ_SPACE || mObjects(btx, bty) == OBJ_GOAL) {
-            mObjects(tx, ty) = OBJ_MAN;
-            mObjects(btx, bty) = OBJ_BLOCK;
-
-            if (mGoalFlags(px, py) == true) {
-                mObjects(px, py) = OBJ_GOAL;
-            }
-            else
-            {
-                mObjects(px, py) = OBJ_SPACE;
+                if (mObjects(px, py).mGoalFlag == true) {
+                    mObjects(px, py).move(dx, dy, Object::OBJ_GOAL);
+                }
+                else
+                {
+                    mObjects(px, py).move(dx, dy, Object::OBJ_SPACE);
+                }
+                mMoveCount = 1;
             }
         }
-    }
 
 }

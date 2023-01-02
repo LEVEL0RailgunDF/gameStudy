@@ -172,7 +172,7 @@ unsigned* Image::data()
 	return mImageData;
 }
 
-void Image::drawCell(int dstX, int dstY, int imgX, int imgY, int w, int h)
+void Image::drawCell(int dstX, int dstY, int imgX, int imgY, int w, int h) const
 {
 	unsigned* vram = Framework::instance().videoMemory();
 	unsigned windowWidth = Framework::instance().width();
@@ -182,14 +182,30 @@ void Image::drawCell(int dstX, int dstY, int imgX, int imgY, int w, int h)
 			int temp = (imgY + y) * mWidth + imgX + x;
 			unsigned imageData = mImageData[temp];
 			
+			unsigned dst = vram[(dstY + y) * windowWidth + dstX + x];
 
-			if (imageData & 0x80000000) { //ÅÐ¶ÏÊÇ·ñÍ¸Ã÷
-				vram[(dstY + y) * windowWidth + dstX + x] = mImageData[temp];
-			}
-			else {
-				
-			}
+			unsigned srcA = (imageData & 0xff000000) >> 24;
+			unsigned srcR = (imageData & 0x00ff0000) >> 16;
+			unsigned srcG = (imageData & 0x0000ff00) >> 8;
+			unsigned srcB = (imageData & 0x000000ff);
 
+			unsigned dstR = (dst & 0x00ff0000) >> 16;
+			unsigned dstG = (dst & 0x0000ff00) >> 8;
+			unsigned dstB = (dst & 0x000000ff);
+
+			unsigned r = (srcR - dstR) * srcA / 255 + dstR;
+			unsigned g = (srcG - dstG) * srcA / 255 + dstG;
+			unsigned b = (srcB - dstB) * srcA / 255 + dstB;
+
+			dst = (r << 16) | (g << 8) | b;
+			vram[(dstY + y) * windowWidth + dstX + x] = dst;
+
+			//if (imageData & 0x80000000) { //ÅÐ¶ÏÊÇ·ñÍ¸Ã÷
+			//	vram[(dstY + y) * windowWidth + dstX + x] = mImageData[temp];
+			//}
+			//else {
+			//	
+			//}
 			
 		}
 	}

@@ -1,24 +1,29 @@
 #pragma once
 #include "Array2D.h"
 #include "Image.h"
-
+#include "Object.h"
 class Stage
 {
 
 public:
-    enum Object {
-        OBJ_SPACE,
-        OBJ_WALL,
-        OBJ_GOAL,
-        OBJ_BLOCK,
-        OBJ_MAN,
+    //enum Object {
+    //    OBJ_SPACE,
+    //    OBJ_WALL,
+    //    OBJ_GOAL,
+    //    OBJ_BLOCK,
+    //    OBJ_MAN,
 
-        OBJ_UNKNOWN,
-    };
+    //    OBJ_UNKNOWN,
+    //};
+
+    int MAX_MOVE_COUNT = 32;
+
 private:
     int stageWidth = 0;
     int stageHeight = 0;
-    Array2D <int> mObjects;
+
+    int mMoveCount = 0;
+    Array2D <Object> mObjects;
     Array2D <bool> mGoalFlags;
 
     Image img;
