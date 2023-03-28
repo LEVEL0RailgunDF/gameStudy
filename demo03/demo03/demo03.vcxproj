@@ -77,13 +77,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(GAME_LIB_DIR)\zlib-1.2.3;$(GAME_LIB_DIR)\dll32;$(GAME_LIB_DIR)\GameLib\Sequence1\include;C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(GAME_LIB_DIR)\zlib-1.2.3;$(GAME_LIB_DIR)\dll32;$(GAME_LIB_DIR)\GameLib\Sequence1\include;C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt;$(GAME_LIB_DIR)\demo03\demo03;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(GAME_LIB_DIR)\static32;$(GAME_LIB_DIR)\dll32;$(GAME_LIB_DIR)\GameLib\Sequence1\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(GAME_LIB_DIR)\static32;$(GAME_LIB_DIR)\dll32;$(GAME_LIB_DIR)\GameLib\Sequence1\lib;$(GAME_LIB_DIR)\demo03\demo03</AdditionalLibraryDirectories>
       <AdditionalDependencies>GameLib_d.lib;zlibstat.lib;zlibwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
@@ -135,18 +136,34 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Array2D.cpp" />
+    <ClCompile Include="Sequence\Game\Play.cpp" />
+    <ClCompile Include="Sequence\Game\Loading.cpp" />
+    <ClCompile Include="Sequence\Game\Clear.cpp" />
     <ClCompile Include="demo03.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Image.cpp" />
+    <ClCompile Include="Sequence\Game\Menu.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Sequence\Game\Game_Parent.cpp" />
+    <ClCompile Include="Sequence\Parent.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="Sequence\Title.cpp" />
+    <ClCompile Include="Sequence\StageSelect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array2D.h" />
+    <ClInclude Include="Sequence\Game\Play.h" />
+    <ClInclude Include="Sequence\Game\Loading.h" />
+    <ClInclude Include="Sequence\Game\Clear.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="Image.h" />
+    <ClInclude Include="Sequence\Game\Menu.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Sequence\Game\Game_Parent.h" />
+    <ClInclude Include="Sequence\Parent.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="Sequence\Title.h" />
+    <ClInclude Include="Sequence\StageSelect.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

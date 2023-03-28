@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\Sequence">
+      <UniqueIdentifier>{beaac8c3-9c6a-4168-8a72-d084c6399687}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Sequence\Game">
+      <UniqueIdentifier>{004d3f67-eead-44be-8263-d0bc70c8649e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Sequence">
+      <UniqueIdentifier>{a24dc52a-0002-4f82-8d98-8b58103bb9da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Sequence\Game">
+      <UniqueIdentifier>{a8b2c17f-5c21-4a3a-bebf-df3c4f4f6a4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="demo03.cpp">
@@ -33,6 +45,30 @@
     <ClCompile Include="Object.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Sequence\Game\Game_Parent.cpp">
+      <Filter>源文件\Sequence\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Sequence\Game\Menu.cpp">
+      <Filter>源文件\Sequence\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Sequence\Parent.cpp">
+      <Filter>源文件\Sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="Sequence\Title.cpp">
+      <Filter>源文件\Sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="Sequence\StageSelect.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Sequence\Game\Clear.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Sequence\Game\Loading.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Sequence\Game\Play.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="File.h">
@@ -48,6 +84,30 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Sequence\Game\Game_Parent.h">
+      <Filter>头文件\Sequence\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Sequence\Game\Menu.h">
+      <Filter>头文件\Sequence\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Sequence\Parent.h">
+      <Filter>头文件\Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="Sequence\Title.h">
+      <Filter>头文件\Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="Sequence\StageSelect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Sequence\Game\Clear.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Sequence\Game\Loading.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Sequence\Game\Play.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

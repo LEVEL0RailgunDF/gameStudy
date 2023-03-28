@@ -33,6 +33,7 @@ public:
 	unsigned* data();
 
 	void drawCell(int dstX, int dstY, int imgX, int imgY, int width, int height) const;
+	void draw();
 	~Image();
 private:
 };

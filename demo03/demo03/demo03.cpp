@@ -3,12 +3,16 @@
 
 //#include <iostream>
 #include "GameLib/Framework.h"
+
 #include "File.h"
 #include "Image.h"
 #include "Stage.h"
-
+#include "Sequence/Parent.h"
 
 using namespace GameLib;
+
+Sequence::Parent* gRootSequence = 0; //根序列
+
 
 Stage *stage = nullptr;
 
@@ -16,24 +20,27 @@ void mainLoop()
 {
     
 
-    if (!stage) {
-        File stageFile("stage.txt");
-        char* stageData = stageFile.data();
-        stage = new Stage(stageData, stageFile.size(),"box.dds");
+    //if (!stage) {
+    //    File stageFile("stage.txt");
+    //    char* stageData = stageFile.data();
+    //    stage = new Stage(stageData, stageFile.size(),"box.dds");
 
+    //    Framework::instance().setFrameRate(60);
+    //}
+
+    //if (stage->checkClear()) {
+    //    cout << "you win!"<<endl;
+    //    return;
+    //}
+
+    //stage->update();
+    //stage->draw();
+
+    if (!gRootSequence) {
+        gRootSequence = new Sequence::Parent();
         Framework::instance().setFrameRate(60);
     }
-
-    if (stage->checkClear()) {
-        cout << "you win!"<<endl;
-        return;
-    }
-
-    stage->update();
-    stage->draw();
-
-
-
+    gRootSequence->update();
 
 }
 

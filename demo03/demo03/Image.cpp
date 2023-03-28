@@ -212,6 +212,11 @@ void Image::drawCell(int dstX, int dstY, int imgX, int imgY, int w, int h) const
 
 }
 
+void Image::draw()
+{
+	drawCell(0,0,0,0,mWidth,mHeight);
+}
+
 Image::~Image()
 {
 }
